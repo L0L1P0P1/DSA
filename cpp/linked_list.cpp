@@ -95,9 +95,38 @@ public:
 
   void push(int value) { insert(0, value); }
 
-  void reverse() {}
+  void reverse() {
+    if (len < 2)
+      return;
+    tail = head;
 
-  ~LinkedList() {}
+    Node *a = sentinel;
+    Node *b = head;
+    Node *c = head->next;
+
+    while (c != sentinel) {
+      b->next = a;
+      a = b;
+      b = c;
+      c = c->next;
+    }
+    c->next = b;
+    b->next = a;
+  }
+
+  ~LinkedList() {
+    if (len == 0) {
+      delete sentinel;
+      return;
+    }
+    Node *a = head;
+    while (a != sentinel) {
+      Node *target = a;
+      a = a->next;
+      delete target;
+    }
+    delete sentinel;
+  }
 };
 
 int main() {
@@ -105,6 +134,9 @@ int main() {
   dll.append(1);
   dll.append(2);
   dll.append(3);
+  dll.append(4);
+  dll.append(5);
+  dll.append(6);
   dll.pop(0);
   dll.display();
   dll.reverse();
